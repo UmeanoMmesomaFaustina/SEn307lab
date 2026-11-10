@@ -1,0 +1,15 @@
+
+Error 1451: Cannot delete or update a parent row: a foreign key constraint
+fails
+
+MySQL refused the operation due to referential integrity constraints, preventing the deletion of a parent row in the Student table.
+
+This occurred because there were still active dependent records in the child Enrolment table referencing that primary key.
+Allowing the deletion would have created orphaned records pointing to a student that no longer exists.
+To fix this manually, I first deleted the dependent child rows from the Enrolment table before attempting the parent deletion.
+By clearing the child references first, I was then able to safely delete the parent row in the Student table.
+
+Alternatively, I could have addressed this at the schema level by defining the foreign key with the ON DELETE CASCADE option.
+Using ON DELETE CASCADE would have automatically removed the child records whenever the parent record was deleted.
+Another valid alternative was ON DELETE SET NULL, which keeps the child record but clears the foreign key value, though it requires the column to be nullable.
+
